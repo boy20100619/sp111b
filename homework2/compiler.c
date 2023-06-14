@@ -89,9 +89,28 @@ void WHILE() {
   emit("(L%d)\n", whileEnd);
 }
 
+//加入DOWHILE=do STMT while(E)
+void DOWHILE() {
+  int dowhileBegin = nextLabel(); //L0
+  int dowhileEnd = nextLabel(); //L1
+  emit("(L%d)\n", dowhileBegin);
+  skip("do");
+  STMT();
+  skip("while");
+  skip("(");
+  int e = E();
+  emit("if not T%d goto L%d\n", e, dowhileEnd);
+  skip(")");
+  skip(";");
+  emit("goto L%d\n", dowhileBegin);
+  emit("(L%d)\n", dowhileEnd);
+}
+
 // STMT = WHILE | BLOCK | ASSIGN
 void STMT() {
-  if (isNext("while"))
+  if (isNext("do"))
+    DOWHILE();
+  else if (isNext("while"))
     WHILE();
   // else if (isNext("if"))
   //   IF();
