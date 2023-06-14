@@ -26,6 +26,10 @@ if (isNext("do"))
     DOWHILE();
 else if (isNext("while"))
     WHILE();
+else if (isNext("{"))
+    BLOCK();
+else
+    ASSIGN();
 ```
 
 
