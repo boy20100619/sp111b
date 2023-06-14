@@ -90,21 +90,23 @@ void WHILE() {
 }
 
 //加入DOWHILE=do STMT while(E)
-void DOWHILE() {
-  int dowhileBegin = nextLabel(); //L0
-  int dowhileEnd = nextLabel(); //L1
-  emit("(L%d)\n", dowhileBegin);
-  skip("do");
-  STMT();
+void DOWHILE()
+{
+  int dowhileBegin = nextLabel();
+  int dowhileEnd = nextLabel();
+  emit("(L%d)\n", dowhileBegin); //記錄點
+  skip("do"); 
+  STMT(); //處理內部程式
   skip("while");
   skip("(");
-  int e = E();
-  emit("if not T%d goto L%d\n", e, dowhileEnd);
+  int e = E(); //判斷式
+  emit("if not t%d goto L%d\n", e, dowhileEnd); //條件式成立則跳開
   skip(")");
-  skip(";");
+  skip(";"); 
   emit("goto L%d\n", dowhileBegin);
   emit("(L%d)\n", dowhileEnd);
 }
+
 
 // STMT = WHILE | BLOCK | ASSIGN
 void STMT() {
