@@ -5,7 +5,7 @@
 // just enough features to allow self-compilation and a bit more
 
 // Written by Robert Swierczek
-// 修改者: 陳鍾誠 (模組化並加上中文註解)、張佑豪(讓註解更完整)
+// 修改者: 陳鍾誠 (模組化並加上中文註解)
 
 //gcc編譯要認函式庫，但c4不用,遇到#會略過整行
 #include <stdio.h>
@@ -47,7 +47,7 @@ enum { CHAR, INT, PTR };
 // identifier offsets (since we can't create an ident struct)
 enum { Tk, Hash, Name, Class, Type, Val, HClass, HType, HVal, Idsz }; // HClass, HType, HVal 是暫存的備份 ???
 
-void next() // 詞彙解析 lexer//詞法分析器
+void next() // 詞彙解析 lexer //詞彙解析器用於將程式碼分解為一系列的詞彙（tokens）。該函式 next() 會依序讀取 p 指針指向的字元，並將其轉換為對應的詞彙。
 {
   char *pp;
 
@@ -85,7 +85,7 @@ void next() // 詞彙解析 lexer//詞法分析器
       return;
     }
     else if (tk >= '0' && tk <= '9') { // 取得數字串
-      if (ival = tk - '0') { while (*p >= '0' && *p <= '9') ival = ival * 10 + *p++ - '0'; } // 十進位 //ival=tk-'0',ival=0是false,ival!=0會執行條件句(存到裡面同時判斷，寫法危險，但可行)
+      if (ival = tk - '0') { while (*p >= '0' && *p <= '9') ival = ival * 10 + *p++ - '0'; } // 十進位
       else if (*p == 'x' || *p == 'X') { // 十六進位
         while ((tk = *++p) && ((tk >= '0' && tk <= '9') || (tk >= 'a' && tk <= 'f') || (tk >= 'A' && tk <= 'F'))) // 16 進位
           ival = ival * 16 + (tk & 15) + (tk >= 'A' ? 9 : 0);
@@ -133,7 +133,7 @@ void next() // 詞彙解析 lexer//詞法分析器
   }
 }
 
-void expr(int lev) // 運算式 expression, 其中 lev 代表優先等級//語法分析器（解析器）
+void expr(int lev) // 運算式 expression, 其中 lev 代表優先等級 //expr函數的主要工作為判斷 token 的類型，並根據其類型編譯成相應的指令，其中可能的 token 類型包括數值、字串、變數、運算符等等。此外，expr 函數還會遞迴調用自己，以處理運算符的優先級。
 {
   int t, *d;
 
@@ -284,7 +284,7 @@ void expr(int lev) // 運算式 expression, 其中 lev 代表優先等級//語�
   }
 }
 
-void stmt() // 陳述 statement//語義分析器
+void stmt() // 陳述 statement //主要用於解析和處理不同類型的陳述式，並生成相應的指令。
 {
   int *a, *b;
 
@@ -433,6 +433,7 @@ int prog() { // 編譯整個程式 Program
   return 0;
 }
 
+//這段程式碼是虛擬機器的執行函式，用於執行指令集。其中 i 變數為當前要執行的指令，根據 i 的值，虛擬機會執行不同的操作。
 int run(int *pc, int *bp, int *sp) { // 虛擬機 => pc: 程式計數器, sp: 堆疊暫存器, bp: 框架暫存器
   int a, cycle; // a: 累積器, cycle: 執行指令數
   int i, *t;    // i: instruction, t:temps
@@ -498,6 +499,7 @@ int main(int argc, char **argv) // 主程式
   int *pc, *bp, *sp;
   int i, *t;
 
+  //這段程式碼的目的是解析命令列參數，並根據參數設定全域變數 src 和 debug 的值，如果命令列參數不符合預期的格式或缺少必要的參數，將顯示使用說明並結束程式。
   --argc; ++argv;
   if (argc > 0 && **argv == '-' && (*argv)[1] == 's') { src = 1; --argc; ++argv; }
   if (argc > 0 && **argv == '-' && (*argv)[1] == 'd') { debug = 1; --argc; ++argv; }
@@ -505,15 +507,15 @@ int main(int argc, char **argv) // 主程式
 
   if ((fd = open(*argv, 0)) < 0) { printf("could not open(%s)\n", *argv); return -1; }
 
-  poolsz = 256*1024; // arbitrary size
+  poolsz = 256*1024;  //記憶體的大小
   if (!(sym = malloc(poolsz))) { printf("could not malloc(%d) symbol area\n", poolsz); return -1; } // 符號段
   if (!(le = e = malloc(poolsz))) { printf("could not malloc(%d) text area\n", poolsz); return -1; } // 程式段
   if (!(data = malloc(poolsz))) { printf("could not malloc(%d) data area\n", poolsz); return -1; } // 資料段
   if (!(sp = malloc(poolsz))) { printf("could not malloc(%d) stack area\n", poolsz); return -1; }  // 堆疊段
 
-  memset(sym,  0, poolsz);
-  memset(e,    0, poolsz);
-  memset(data, 0, poolsz);
+  memset(sym,  0, poolsz); //將符號段的記憶體區域初始化為零。
+  memset(e,    0, poolsz); //將程式段的記憶體區域初始化為零。
+  memset(data, 0, poolsz); //將資料段的記憶體區域初始化為零。
 
   p = "char else enum if int return sizeof while "
       "open read close printf malloc free memset memcmp exit void main";
@@ -527,17 +529,17 @@ int main(int argc, char **argv) // 主程式
   p[i] = 0; // 設定程式 p 字串結束符號 \0
   close(fd);
 
-  if (prog() == -1) return -1; //剖析，=-1代表有錯
+  if (prog() == -1) return -1; // 呼叫 prog() 開始編譯。
 
   if (!(pc = (int *)idmain[Val])) { printf("main() not defined\n"); return -1; } //設定程式計數器在main的位置
   if (src) return 0;
 
-  // setup stack//堆疊環境的初始化動作
+  // setup stack //堆疊環境的初始化動作
   bp = sp = (int *)((int)sp + poolsz);
-  *--sp = EXIT; // call exit if main returns
+  *--sp = EXIT;  // call exit if main returns
   *--sp = PSH; t = sp;
-  *--sp = argc;
+  *--sp = argc;  // 把 argc,argv 放入堆疊，這樣 main(argc,argv) 才能取得到
   *--sp = (int)argv;
   *--sp = (int)t;
-  return run(pc, bp, sp); //執行虛擬機
+  return run(pc, bp, sp); //虛擬機執行中間碼
 }
