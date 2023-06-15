@@ -5,7 +5,7 @@
 // just enough features to allow self-compilation and a bit more
 
 // Written by Robert Swierczek
-// 修改者: 陳鍾誠 (模組化並加上中文註解)
+// 修改者: 陳鍾誠 (模組化並加上中文註解)，梁齊恆 (補充部分註解)
 
 //gcc編譯要認函式庫，但c4不用,遇到#會略過整行
 #include <stdio.h>
