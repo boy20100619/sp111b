@@ -4,6 +4,8 @@
 * 其他參考:
   * [C in four function (c4) Compiler](https://hackmd.io/@srhuang/Bkk2eY5ES)
   * [gcc編譯器基本使用](https://blog.gtwang.org/programming/gcc-comipler-basic-tutorial-examples/)
+
+ [LICENSE](https://github.com/boy20100619/sp111b/blob/main/%E6%9C%9F%E4%B8%AD/LICENSE.txt)
 ___
 # 編譯器介紹
 C4 是 Robert Swierczek 寫的一個小型 C 語言編譯器，全部 527 行的原始碼。
@@ -113,3 +115,7 @@ run(int *pc, int *bp, int *sp)
 - `DIV`：除法運算。
 - `MOD`：取模運算。
 - 系統呼叫指令：`OPEN`、`READ`、`CLOS`、`PRTF`、`MALC`、`FREE`、`MSET`、`MCMP`、`EXIT`。這些指令用於執行系統呼叫，例如開檔、讀檔、關檔、輸出格式化字串、動態記憶體分配、釋放記憶體、設定記憶體、比較記憶體和結束執行。
+## 暫存器
+* pc 程式計數器：它存放的是一個記憶體地址，該地址中存放著 下一條 要執行的計算機指令。 main 函式中加入初始化程式碼，注意的是PC在初始應指向目的碼中的main函式
+* sp 堆疊暫存器：永遠指向當前的棧頂。注意的是由於棧(處理函式呼叫相關的資料)是位於高地址並向低地址增長的，所以入棧時 SP 的值減小。
+* bp 框架暫存器：也是用於指向棧的某些位置，在呼叫函式時會使用到它。
