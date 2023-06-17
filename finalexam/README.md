@@ -9,7 +9,7 @@
 
 [LICENSE](/finalexam/LICENSE)
 
-透過python[在google colab中運行](https://colab.research.google.com/drive/1DSQeE5JdF8yuK9fA77_9fj7D8B4-Usdk?usp=sharing)
+建議[在google colab中運行](https://colab.research.google.com/drive/1DSQeE5JdF8yuK9fA77_9fj7D8B4-Usdk?usp=sharing)查看python程式碼
 ___
 ## 基本介紹
 ### 一、原理與架構
